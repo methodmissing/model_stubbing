@@ -30,6 +30,10 @@ module ModelStubbing
     attr_accessor :id, :valid
     attr_reader :attributes
   
+    def self.reflect_on_association( association )
+      instance_methods.include?( association )
+    end
+  
     def self.base_class
       self
     end

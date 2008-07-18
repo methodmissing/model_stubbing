@@ -21,5 +21,13 @@ module ModelStubbing
       values.index(%("1")).should_not be_nil
       values.index(%("baz")).should_not be_nil
     end
+    
+    it "ignores associations" do
+      ModelStubbing::User.stub!(:instance_methods).and_return( [:tags] )
+      @fixture.update( :tags => %w(tag1 tag2) )
+      values = @fixture.value_list
+      values.index(%("tag1tag2")).should be_nil
+    end
+    
   end
 end
