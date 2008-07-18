@@ -1,3 +1,5 @@
+$:.unshift(File.dirname(__FILE__)) 
+
 require 'model_stubbing/extensions'
 require 'model_stubbing/definition'
 require 'model_stubbing/model'
