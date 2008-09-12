@@ -115,7 +115,7 @@ module ModelStubbing
       ModelStubbing.records.clear
       ModelStubbing.stub_current_time_with(current_time) if current_time
       return unless database?
-      ActiveRecord::Base.send :increment_open_transactions
+      ActiveRecord::Base.connection.send :increment_open_transactions
       ActiveRecord::Base.connection.begin_db_transaction
     end
     
@@ -123,7 +123,7 @@ module ModelStubbing
       ModelStubbing.records.clear
       # TODO: teardown Time.stubs(:now)
       return unless database?
-      ActiveRecord::Base.connection.rollback_db_transaction
+      ActiveRecord::Base.connection.rollback_db_transaction rescue nil
       ActiveRecord::Base.verify_active_connections!
     end
     
