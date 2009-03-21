@@ -6,7 +6,6 @@ module ModelStubbing
         attr_accessor :definition, :definition_inserted
       end
       base.extend ClassMethods
-      
       if base.respond_to?(:prepend_after)
         base.prepend_after(:all) do
           if self.class.definition_inserted
@@ -19,7 +18,7 @@ module ModelStubbing
 
     module ClassMethods
       def create_model_methods_for(models)
-        class_eval models.collect { |model| model.stub_method_definition }.join("\n")
+        class_eval models.collect { |model| model.stub_method_definition }.join("\n") << "definition.insert!"
       end
     end
 
@@ -48,6 +47,7 @@ module ModelStubbing
       end
       if database?
         ActiveRecord::Base.connection.rollback_db_transaction
+        ActiveRecord::Base.connection.decrement_open_transactions
         ActiveRecord::Base.verify_active_connections!
       end
     end
